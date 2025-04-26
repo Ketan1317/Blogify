@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('./partials/head.ejs') %>
+    <title>HomePage</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); /* Gradient background */
+            color: #333;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.95); /* Slightly transparent white */
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 1s ease-in;
+        }
+        .blog-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px; /* Increased spacing for better separation */
+            justify-content: flex-start;
+        }
+        .card {
+            width: calc(33.33% - 25px); /* Adjusted for new gap */
+            min-width: 300px;
+            margin-bottom: 25px;
+            background-color: #fff;
+            border: none;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+        .card-img-top {
+            width: 100%;
+            height: 220px; /* Slightly taller images */
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        .card:hover .card-img-top {
+            transform: scale(1.05); /* Zoom effect on hover */
+        }
+        .card-body {
+            padding: 20px;
+            background-color: #fafafa; /* Subtle background for card body */
+        }
+        .card-title {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: #2c3e50;
+            font-weight: 600;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap; /* Prevent title from wrapping */
+            transition: color 0.3s ease;
+        }
+        .card:hover .card-title {
+            color: #3498db;
+        }
+        .btn-primary {
+            display: inline-block;
+            padding: 10px 20px;
+            text-decoration: none;
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 992px) {
+            .card {
+                width: calc(50% - 25px);
+            }
+        }
+        @media (max-width: 768px) {
+            .card {
+                width: 100%;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .blog-list .card {
+            animation: fadeIn 0.5s ease-out forwards;
+            animation-delay: calc(0.1s * var(--card-index)); /* Staggered animation */
+        }
+    </style>
+</head>
+<body>
+    <%- include('./partials/nav.ejs') %>
+
+    <div class="container mt-4">
+        <div class="blog-list">
+            <% blogs.forEach((ele, index) => { %>
+                <div class="card" style="--card-index: <%= index %>;">
+                    <img src="<%= ele.coverImageURL %>" class="card-img-top" alt="<%= ele.title %> Cover Image">
+                    <div class="card-body">
+                        <h5 class="card-title"><%= ele.title %></h5>
+                        <a href="/blog/<%= ele._id %>" class="btn btn-primary">View</a>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+    </div>
+
+    <%- include('./partials/scripts.ejs') %>
+</body>
+</html>

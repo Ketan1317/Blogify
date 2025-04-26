@@ -1,0 +1,109 @@
+<nav class="navbar navbar-expand-lg bg-dark p-3 text-white" style="box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);">
+    <div class="container-fluid">
+        <a class="navbar-brand text-white fs-3 fw-bold" href="/" style="transition: color 0.3s ease;">
+            <span style="background: linear-gradient(45deg, #3498db, #8e44ad); -webkit-background-clip: text; color: transparent;">Blogify</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+            aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon" style="filter: invert(1);"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link active text-white fs-5" aria-current="page" href="/" style="transition: color 0.3s ease;">
+                        <span class="shine-text">Home</span>
+                    </a>
+                </li>
+                <% if (locals.user) { %>
+                    <li class="nav-item">
+                        <a class="nav-link text-white fs-5" href="/blog/add-new" style="transition: color 0.3s ease;">
+                            <span class="shine-text">Add Blog</span>
+                        </a>
+                    </li>
+    
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-white fs-5 shine-text" href="#" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false" style="transition: color 0.3s ease;">
+                            <%= user.username %>
+                        </a>
+                        <ul class="dropdown-menu bg-dark" style="border: none; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);">
+                            <li>
+                                <a class="dropdown-item text-danger" href="/user/logout" style="transition: color 0.3s ease;">
+                                    <span class="shine-text">Logout</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                <% } else { %>
+                    <li class="nav-item">
+                        <a class="nav-link text-white fs-5" href="/user/signup" style="transition: color 0.3s ease;">
+                            <span class="shine-text">Sign Up</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white fs-5" href="/user/signin" style="transition: color 0.3s ease;">
+                            <span class="shine-text">Sign In</span>
+                        </a>
+                    </li>
+                <% } %>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<% if (locals.error) { %>
+    <div class="container mt-5">
+        <div class="alert alert-danger" role="alert" style="border-radius: 8px; animation: fadeIn 0.5s ease-in-out;">
+            <%= locals.error %>
+        </div>
+    </div>
+<% } %>
+
+<style>
+    .navbar {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+    }
+    .navbar-brand:hover {
+        color: #3498db !important;
+    }
+    .nav-link {
+        position: relative;
+        padding: 10px 15px;
+    }
+    .nav-link:hover {
+        color: #3498db !important;
+    }
+    .shine-text {
+        position: relative;
+    }
+    .shine-text::after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 2px;
+        bottom: -5px;
+        left: 0;
+        background-color: #3498db;
+        transition: width 0.3s ease;
+    }
+    .shine-text:hover::after {
+        width: 100%;
+    }
+    .dropdown-menu .dropdown-item:hover {
+        background-color: #2c2c2c !important;
+        color: #ff6b6b !important;
+    }
+    .alert {
+        padding: 15px;
+        font-size: 1rem;
+        text-align: center;
+        max-width: 500px;
+        margin: 0 auto;
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>

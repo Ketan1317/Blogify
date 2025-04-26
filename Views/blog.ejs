@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('./partials/head.ejs') %>
+    <title>Blog - <%= blogDetails.title %></title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+        }
+        h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            animation: fadeIn 1s ease-in;
+        }
+        img {
+            width: 100%;
+            max-height: 450px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        img:hover {
+            transform: scale(1.02);
+        }
+        p {
+            color: #7f8c8d;
+            font-size: 1.1em;
+            margin-bottom: 25px;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 8px 15px;
+            border: 2px solid #3498db;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        .back-link:hover {
+            background-color: #3498db;
+            color: #fff;
+            text-decoration: none;
+        }
+        .author-info {
+            margin-top: 30px;
+            padding: 15px;
+            border-top: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            background-color: #f1f3f5;
+            border-radius: 5px;
+            animation: slideIn 1s ease-out;
+        }
+        .author-info img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #fff;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+        .author-info p {
+            margin: 0;
+            color: #2c3e50;
+            font-size: 1em;
+        }
+        .mt-5 {
+            margin-top: 40px;
+        }
+        .mb-3 {
+            margin-bottom: 15px;
+        }
+        .form-control {
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            padding: 10px;
+            width: 100%;
+            transition: border-color 0.3s ease;
+        }
+        .form-control:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+            outline: none;
+        }
+        .btn-primary {
+            background-color: #3498db;
+            border: none;
+            padding: 10px 20px;
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: #2980b9;
+        }
+        pre {
+            background-color: #f1f3f5;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-size: 1em;
+            color: #34495e;
+        }
+        h2 {
+            color: #2c3e50;
+            margin-top: 10px;
+            font-size: 1.3em;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideIn {
+            from { transform: translateX(-100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <%- include('./partials/nav.ejs') %>
+
+    <div class="container">
+        <h1><%= blogDetails.title %></h1>
+        <img src="<%= blogDetails.coverImageURL %>" alt="<%= blogDetails.title %> cover image">
+        <p><%= blogDetails.body %></p>
+        <a href="/" class="back-link">Back to Homepage</a>
+    </div>
+    <div class="container">
+        <div class="author-info">
+            <% if (blogDetails.createdBy) { %>
+                <img src="<%= blogDetails.createdBy.imageUrl %>" alt="Author avatar">
+                <p><strong>Author:</strong> <%= blogDetails.createdBy.email %></p>
+            <% } else { %>
+                <p><strong>Author:</strong> Unknown</p>
+            <% } %>
+        </div>
+    </div>
+    <div class="container mt-5">
+        <% if (locals.user) { %>
+            <form action="/blog/comments/<%= blogDetails._id %>" method="post">
+                <div class="mb-3">
+                    <label class="mb-2" for="comment">COMMENTS (<%= comments.length %>)</label>
+                    <input type="text" class="form-control mb-4" name="content" id="comment" placeholder="Add your comment...">
+                </div>
+                <div class="mt-3">
+                    <button class="btn btn-primary" type="submit">Add</button>
+                </div>
+            </form>
+            <div>
+                <% comments.forEach(ele => { %>
+                    <div class="comment-block" style="margin-top: 20px;">
+                        <% if (ele.createdBy) { %>
+                            <img src="<%= ele.createdBy.imageUrl %>" alt="User avatar" style="width: 50px; height: 50px; border-radius: 50%; margin-right: 10px;">
+                            <h2><%= ele.createdBy.username || ele.createdBy.email %></h2>
+                        <% } else { %>
+                            <h2>Unknown User</h2>
+                        <% } %>
+                        <pre><%= ele.content %></pre>
+                    </div>
+                <% }) %>
+            </div>
+        <% } %>
+    </div>
+
+    <%- include('./partials/scripts.ejs') %>
+</body>
+</html>
