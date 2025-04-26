@@ -60,6 +60,7 @@ blogRouter.post("/comments/:blogid", async (req, res) => {
         blogId: req.params.blogid,
         createdBy: req.user._id,
     });
+    console.log("op");
 
     return res.redirect(`/blog/${req.params.blogid}`);
 });
